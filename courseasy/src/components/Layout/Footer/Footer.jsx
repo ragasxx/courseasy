@@ -20,13 +20,13 @@ const Footer = () => {
           color={'white'}
           fontSize="50"
         >
-          <a href="https://www.youtube.com/@indnetworks1" target={'_blank'}>
+          <a href="https://www.youtube.com/@indnetworks1" target={'blank'}>
             <TiSocialYoutubeCircular />
           </a>
-          <a href="https://github.com/ragasxx" target={'_blank'}>
+          <a href="https://github.com/ragasxx" target={'blank'}>
             <DiGithub />
           </a>
-          <a href="https://ragasxx.github.io/portfolio/" target={'_blank'}>
+          <a href="https://ragasxx.github.io/portfolio/" target={'blank'}>
             <TiSocialInstagramCircular />
           </a>
         </HStack>
