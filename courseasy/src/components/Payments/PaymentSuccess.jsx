@@ -3,12 +3,12 @@ import {
   Button,
   Container,
   Heading,
-  Link,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import { RiCheckboxCircleFill } from 'react-icons/ri';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const PaymentSuccess = () => {
   return (
@@ -41,12 +41,8 @@ const PaymentSuccess = () => {
         <Link to="/profile">
           <Button variant={'ghost'}>Go to Profile</Button>
         </Link>
-         
-         <Heading size={"xs"}>
-          Referene: sadjkdskdkskajkjdkskj
-         </Heading>
-   
 
+        <Heading size={'xs'}>Referene: sadjkdskdkskajkjdkskj</Heading>
       </VStack>
     </Container>
   );
