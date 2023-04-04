@@ -1,5 +1,13 @@
-import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
-import {RiCheckboxCircleFill} from 'react-icons/ri';
+import {
+  Box,
+  Button,
+  Container,
+  Heading,
+  Link,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { RiCheckboxCircleFill } from 'react-icons/ri';
 import React from 'react';
 
 const PaymentSuccess = () => {
@@ -24,11 +32,21 @@ const PaymentSuccess = () => {
               Congratulations you're a pro member. You have access to premium
               content
             </Text>
-            <Heading size={"4xl"}>
+            <Heading size={'4xl'}>
               <RiCheckboxCircleFill />
             </Heading>
           </VStack>
         </Box>
+
+        <Link to="/profile">
+          <Button variant={'ghost'}>Go to Profile</Button>
+        </Link>
+         
+         <Heading size={"xs"}>
+          Referene: sadjkdskdkskajkjdkskj
+         </Heading>
+   
+
       </VStack>
     </Container>
   );
