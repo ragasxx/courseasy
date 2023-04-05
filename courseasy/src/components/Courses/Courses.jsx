@@ -6,11 +6,11 @@ import {
   HStack,
   Image,
   Input,
-  Link,
   Stack,
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 const Course = ({
   views,
