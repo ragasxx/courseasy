@@ -38,6 +38,7 @@ const Header = () => {
 
       <Button
         onClick={onOpen}
+        zIndex="overlay"
         colorScheme={'yellow'}
         width="12"
         height={'12'}
