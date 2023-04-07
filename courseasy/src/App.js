@@ -15,7 +15,9 @@ import NotFound from './components/Layout/NotFound/NotFound';
 import PaymentFail from './components/Payments/PaymentFail';
 import PaymentSuccess from './components/Payments/PaymentSuccess';
 import Subscribe from './components/Payments/Subscribe';
+import ChangePassword from './components/Profile/ChangePassword';
 import Profile from './components/Profile/Profile';
+import UpdateProfile from './components/Profile/UpdateProfile';
 import Request from './components/Request/Request';
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/paymentsuccess" element={<PaymentSuccess />} />
         <Route path="/paymentfail" element={<PaymentFail />} />
+        <Route path="/changepassword" element={<ChangePassword />} />
+        <Route path="/updateprofile" element={<UpdateProfile />} />
         <Route path="/course/:id" element={<CoursePage />} />
       </Routes>
       <Footer />
