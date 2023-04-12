@@ -32,7 +32,7 @@ export default Sidebar;
 function LinkButton({ url, Icon, title }) {
   return (
     <Link to={`/admin/${url}`}>
-      <Button fontSize={'larger'} colorScheme={'purple'}>
+      <Button fontSize={'medium'} colorScheme={'purple'}>
         <Icon style={{ margin: '4px' }} />
         {title}
       </Button>
