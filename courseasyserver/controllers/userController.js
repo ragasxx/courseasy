@@ -2,7 +2,8 @@ import { User } from "../models/User.js";
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import { sendToken } from "../utils/sendToken.js";
-
+import { sendEmail } from "../utils/sendEmail.js";
+import crypto from "crypto";
 export const register = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
 
@@ -66,5 +67,101 @@ export const getMyProfile = catchAsyncError(async (req, res, next) => {
     success: true,
     message: "Found user",
     user,
+  });
+});
+
+export const changePassword = catchAsyncError(async (req, res, next) => {
+  const { oldPassword, newPassword } = req.body;
+
+  if (!oldPassword || !newPassword)
+    return next(new ErrorHandler("Please Enter All fields", 420));
+
+  const user = await User.findById(req.user._id).select("+password");
+
+  const isMatch = await user.comparePassword(oldPassword);
+
+  if (!isMatch) return next(new ErrorHandler("Wrong password", 401));
+
+  user.password = newPassword;
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Password changed successfully",
+  });
+});
+
+export const updateProfile = catchAsyncError(async (req, res, next) => {
+  const { name, email } = req.body;
+
+  if (!name || !email)
+    return next(new ErrorHandler("Please Enter atkeast one field", 420));
+
+  const user = await User.findById(req.user._id);
+
+  if (newName) user.name = name;
+  if (newEmail) user.email = email;
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "profile updated successfully",
+  });
+});
+
+export const forgetPassword = catchAsyncError(async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) return next(new ErrorHandler("User Not Found", 400));
+
+  const resetToken = await user.getResetToken();
+
+  await user.save();
+
+  // http://localhost:3000/resetpassword/dmskdksndjknasknck
+
+  const url = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
+
+  const message = `Click on the link to reset your password. ${url}. Ignore if you have not requested this mail`;
+
+  // send this token via email
+
+  await sendEmail(user.email, "Courseasy Reset Password", message);
+
+  res.status(200).json({
+    success: true,
+    message: `Reset token has been sent to ${user.email}`,
+  });
+});
+
+export const resetPassword = catchAsyncError(async (req, res, next) => {
+  const { token } = req.params;
+
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: {
+      $gt: Date.now(),
+    },
+  });
+
+  if (!user) return next(new ErrorHandler("Token is invalid or expired", 400));
+
+  user.password = req.body.password;
+  user.resetPasswordExpire = undefined;
+  user.resetPasswordToken = undefined;
+  await user.save();
+
+  res.status(200).json({
+    status: true,
+    message: "Password changed successfully",
   });
 });
