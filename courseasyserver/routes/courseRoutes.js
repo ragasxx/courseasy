@@ -10,7 +10,7 @@ import {
 import singleUpload from "../middlewares/multer.js";
 import {
   authorizeSubscribers,
-  isAdminAuthenticated,
+  isAdminAuthenticated, 
   isAuthenticated,
 } from "../middlewares/auth.js";
 

@@ -159,7 +159,7 @@ export const forgetPassword = catchAsyncError(async (req, res, next) => {
 
   // send this token via email
 
-  await sendEmail(user.email, "Courseasy Reset Password", message);
+  await sendEmail(user. email, "Courseasy Reset Password", message);
 
   res.status(200).json({
     success: true,

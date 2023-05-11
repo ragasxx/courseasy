@@ -14,5 +14,5 @@ export const sendEmail = async (to, subject, text) => {
     to,
     subject,
     text,
-  });
+  }); 
 };
