@@ -7,6 +7,7 @@ import crypto from "crypto";
 import { Course } from "../models/Course.js";
 import cloudinary from "cloudinary";
 import getDataUri from "../utils/dataUri.js";
+import { Stats } from "../models/Stats.js";
 
 export const register = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -159,7 +160,7 @@ export const forgetPassword = catchAsyncError(async (req, res, next) => {
 
   // send this token via email
 
-  await sendEmail(user. email, "Courseasy Reset Password", message);
+  await sendEmail(user.email, "Courseasy Reset Password", message);
 
   res.status(200).json({
     success: true,
@@ -243,8 +244,7 @@ export const removeFromPlaylist = catchAsyncError(async (req, res, next) => {
   });
 });
 
-
-// delete user 
+// delete user
 
 export const deleteUser = catchAsyncError(async (req, res, next) => {
   const user = await User.findById(req.params.id);
@@ -253,7 +253,7 @@ export const deleteUser = catchAsyncError(async (req, res, next) => {
   await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 
   await user.remove();
- 
+
   res.status(200).json({
     success: true,
     message: "User deleted successfully",
@@ -288,7 +288,13 @@ export const updateUserRole = catchAsyncError(async (req, res, next) => {
   });
 });
 
+User.watch().on("change", async () => {
+  const stats = await Stats.find({}).sort({ createdAt: "desc" }).limit(1);
 
+  const subscription = await User.find({ "subscription.status": "active" });
 
-
-
+  stats[0].users = await User.countDocuments();
+  stats[0].subscription = subscription.length;
+  stats[0].createdAt = new Date(Date.now());
+  await stats[0].save();
+});
