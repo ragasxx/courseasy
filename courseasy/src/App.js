@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast,{Toaster} from "react-hot-toast";
 import { loadUser } from './redux/actions/user';
 import {ProtectedRoute} from "protected-route-react";
+import Loader from './components/Layout/Loader/Loader';
 
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
     e.preventDefault();
   });
 
-  const {isAuthenticated,user,message,error} = useSelector(state=>state.user);
+  const {isAuthenticated,user,message,error,loading} = useSelector(state=>state.user);
  
   const dispatch = useDispatch();
 
@@ -55,7 +56,9 @@ function App() {
   
   return (
     <Router>
-      <Header isAuthenticated={isAuthenticated} user={user} />
+    {loading?(<Loader />):(
+      <>
+        <Header isAuthenticated={isAuthenticated} user={user} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Courses />} />
@@ -84,12 +87,14 @@ function App() {
 
         {/* admin routes */}
         <Route path="/admin/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated} adminRoute={true} isAdmin={user&&user.role==="admin"}><Dashboard /></ProtectedRoute>} />
-        <Route path="/admin/users" element={<Users />} />
-        <Route path="/admin/createcourse" element={<CreateCourse />} />
-        <Route path="/admin/courses" element={<AdminCourses />} />
+        <Route path="/admin/users" element={<ProtectedRoute isAuthenticated={isAuthenticated} adminRoute={true} isAdmin={user&&user.role==="admin"}><Users /></ProtectedRoute>} />
+        <Route path="/admin/createcourse" element={<ProtectedRoute isAuthenticated={isAuthenticated} adminRoute={true} isAdmin={user&&user.role==="admin"}><CreateCourse /></ProtectedRoute>} />
+        <Route path="/admin/courses" element={<ProtectedRoute isAuthenticated={isAuthenticated} adminRoute={true} isAdmin={user&&user.role==="admin"}><AdminCourses /></ProtectedRoute>} />
       </Routes>
       <Footer />
       <Toaster />
+      </>
+    )}
     </Router>
   );
 }
