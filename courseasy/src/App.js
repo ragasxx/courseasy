@@ -60,23 +60,30 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/login" element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect="/profile"><Login /></ProtectedRoute>} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect="/profile"><Register /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Profile /></ProtectedRoute>} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/resetpassword/:token" element={<ResetPassword />} />
+        <Route path="/changepassword" element={<ProtectedRoute isAuthenticated={isAuthenticated}><ChangePassword /></ProtectedRoute>} />
+        <Route path="/updateprofile" element={<ProtectedRoute isAuthenticated={isAuthenticated}><UpdateProfile /></ProtectedRoute>} />
+
+
         <Route path="/contact" element={<Contact />} />
         <Route path="/request" element={<Request />} />
         <Route path="/about" element={<About />} />
-        <Route path="/subscribe" element={<Subscribe />} />
-        <Route path="*" element={<NotFound />} />
+
+        <Route path="/subscribe" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Subscribe /></ProtectedRoute>} />
+      
         <Route path="/paymentsuccess" element={<PaymentSuccess />} />
         <Route path="/paymentfail" element={<PaymentFail />} />
-        <Route path="/changepassword" element={<ChangePassword />} />
-        <Route path="/updateprofile" element={<UpdateProfile />} />
+       
+       
         <Route path="/course/:id" element={<CoursePage />} />
 
+        <Route path="*" element={<NotFound />} />
+
         {/* admin routes */}
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated} adminRoute={true} isAdmin={user&&user.role==="admin"}><Dashboard /></ProtectedRoute>} />
         <Route path="/admin/users" element={<Users />} />
         <Route path="/admin/createcourse" element={<CreateCourse />} />
         <Route path="/admin/courses" element={<AdminCourses />} />
