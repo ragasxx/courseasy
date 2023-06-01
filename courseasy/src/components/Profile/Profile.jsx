@@ -23,38 +23,7 @@ import { Link } from 'react-router-dom';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { useState } from 'react';
 
-const Profile = () => {
-  const user = {
-    name: 'sagar',
-    email: 'sagar@gmail.com',
-    createdAt: String(new Date().toISOString()),
-    role: 'user',
-    subscription: {
-      status: 'active',
-    },
-    playlist: [
-      {
-        course: 'sasasa',
-        poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFAtBz4xm9-8WYyteqc9gyzxgQEHRkQgxvdQ&usqp=CAU',
-      },
-      {
-        course: 'sasasa',
-        poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFAtBz4xm9-8WYyteqc9gyzxgQEHRkQgxvdQ&usqp=CAU',
-      },
-      {
-        course: 'sasasa',
-        poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFAtBz4xm9-8WYyteqc9gyzxgQEHRkQgxvdQ&usqp=CAU',
-      },
-      {
-        course: 'sasasa',
-        poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFAtBz4xm9-8WYyteqc9gyzxgQEHRkQgxvdQ&usqp=CAU',
-      },
-    ],
-  };
+const Profile = ({user}) => {
 
   const removeFromPlaylistHandler = id => {
     console.log(id);
@@ -78,7 +47,7 @@ const Profile = () => {
         p="8"
       >
         <VStack>
-          <Avatar boxSize={'40'} />
+          <Avatar boxSize={'40'} src={user.avatar.url} />
           <Button colorScheme={'yellow'} variant="ghost" onClick={onOpen}>
             Change Photo
           </Button>
@@ -100,7 +69,7 @@ const Profile = () => {
           {user.role !== 'admin' && (
             <HStack>
               <Text children="Subscription" fontWeight={'bold'}></Text>
-              {user.subscription.status === 'active' ? (
+              {user.subscription&&user.subscription.status === 'active' ? (
                 <Button color={'yellow.500'}>Cancel Subscription</Button>
               ) : (
                 <Link to="/subscribe">
