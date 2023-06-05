@@ -106,12 +106,12 @@ export const updateProfile = catchAsyncError(async (req, res, next) => {
   const { name, email } = req.body;
 
   if (!name || !email)
-    return next(new ErrorHandler("Please Enter atkeast one field", 420));
+    return next(new ErrorHandler("Please Enter atleast one field", 420));
 
   const user = await User.findById(req.user._id);
 
-  if (newName) user.name = name;
-  if (newEmail) user.email = email;
+  if (name) user.name = name;
+  if (email) user.email = email;
 
   await user.save();
 

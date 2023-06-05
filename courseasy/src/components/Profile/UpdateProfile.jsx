@@ -1,12 +1,24 @@
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
+import {useDispatch} from "react-redux";
+import { updateProfile } from '../../redux/actions/profile';
+import { loadUser } from '../../redux/actions/user';
 
-const UpdateProfile = () => {
-  const[name,setName]=useState("");
-  const[email,setEmail]=useState("");
+const UpdateProfile = ({user}) => {
+  const[name,setName]=useState(user.name);
+  const[email,setEmail]=useState(user.email);
+
+const dispatch = useDispatch();
+
+const submitHandler = async(e)=>{
+  e.preventDefault();
+  await dispatch(updateProfile(name,email));
+  dispatch(loadUser());
+}
+
   return (
     <Container py={"16"} minH="90vh">
-      <form>
+      <form onSubmit={submitHandler}>
         <Heading
           textTransform={'uppercase'}
           children="Update Profile"
