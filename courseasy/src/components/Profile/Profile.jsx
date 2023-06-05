@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Avatar,
   Button,
@@ -23,22 +23,38 @@ import { Link } from 'react-router-dom';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { useState } from 'react';
 import { updateProfilePicture } from '../../redux/actions/profile';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUser } from '../../redux/actions/user';
+import toast from "react-hot-toast";
 
 const Profile = ({user}) => {
 
   
    const dispatch = useDispatch();
 
+   const {loading,error,message} = useSelector(state=>state.profile);
+
+   useEffect(() => {
+    if(error){
+      toast.error(error);
+      dispatch({type:"clearError"})
+    }
+    if(message){
+      toast.success(message);
+      dispatch({type:"clearMessage"})
+    }
+   }, [dispatch,error,message])
+
   const removeFromPlaylistHandler = id => {
     console.log(id);
   };
 
-  const changeImageSubmitHandler = (e, image) => {
+  const changeImageSubmitHandler = async (e, image) => {
     e.preventDefault();
     const myForm = new FormData();
     myForm.append('file',image);  
-    dispatch(updateProfilePicture(myForm))
+    await dispatch(updateProfilePicture(myForm));
+    dispatch(loadUser());
   };
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -132,6 +148,7 @@ const Profile = ({user}) => {
         isOpen={isOpen}
         onClose={onClose}
         changeImageSubmitHandler={changeImageSubmitHandler}
+        loading={loading}
       />
     </Container>
   );
@@ -139,7 +156,7 @@ const Profile = ({user}) => {
 
 export default Profile;
 
-function ChangePhotoBox({ isOpen, onClose, changeImageSubmitHandler }) {
+function ChangePhotoBox({ isOpen, onClose, changeImageSubmitHandler,loading }) {
   const [image, setImage] = useState('');
   const [imagePrev, setImagePrev] = useState('');
 
@@ -190,7 +207,7 @@ function ChangePhotoBox({ isOpen, onClose, changeImageSubmitHandler }) {
                   css={fileUploadStyle}
                   onChange={changeImageHandler}
                 />
-                <Button w={'full'} colorScheme={'yellow'} type="submit">
+                <Button isLoading={loading} w={'full'} colorScheme={'yellow'} type="submit">
                   Change
                 </Button>
               </VStack>
