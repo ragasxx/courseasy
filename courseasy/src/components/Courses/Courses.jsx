@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   Button,
   Container,
@@ -11,6 +11,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import {useDispatch, useSelector} from "react-redux";
+import { getAllCourses } from '../../redux/actions/course';
+import {toast} from "react-hot-toast";
 
 const Course = ({
   views,
@@ -67,7 +70,7 @@ const Course = ({
         <Button
           variant={'ghost'}
           colorScheme={'yellow'}
-          onClick={() => addToPlaylistHandler()}
+          onClick={() => addToPlaylistHandler(id)}
         >
           Add To Playlist
         </Button>
@@ -80,8 +83,24 @@ const Courses = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
 
-  const addToPlaylistHandler = () => {
-    console.log('added to playlist');
+  const {courses,loading,error} = useSelector(state=>state.courses);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+
+    if(error){
+      toast.error(error);
+      dispatch({type:"clearError"});
+    }
+     
+  dispatch(getAllCourses(keyword,category)); 
+
+  }, [dispatch,keyword,category,error]);
+  
+
+  const addToPlaylistHandler = (courseId) => {
+    console.log('added to playlist',courseId);
   };
 
   const categories = [
@@ -98,7 +117,7 @@ const Courses = () => {
       <Heading children="All Courses" m={'8'} />
       <Input
         value={keyword}
-        onChange={e => e.target.value}
+        onChange={e => setKeyword(e.target.value)}
         placeholder="Search a course..."
         focusBorderColor="yellow.500"
       />
@@ -116,18 +135,24 @@ const Courses = () => {
         justifyContent={['flex-start', 'space-evenly']}
         alignItems={['center', 'flex-start']}
       >
-        <Course
-          title={'sample1'}
-          description={'sample1'}
-          views={23}
-          imageSrc={
-            'https://www.91-cdn.com/hub/wp-content/uploads/2021/12/ar88u.jpg'
-          }
-          id={'Sample1'}
-          creator={'sample2'}
-          lectureCount={2}
-          addToPlaylistHandler={addToPlaylistHandler}
-        />
+        {courses.length > 0 ? (
+          courses.map(item => (
+            <Course
+              key={item._id}
+              title={item.title}
+              description={item.description}
+              views={item.views}
+              imageSrc={item.poster.url}
+              id={item._id}
+              creator={item.createdBy}
+              lectureCount={item.numOfVideos}
+              addToPlaylistHandler={addToPlaylistHandler}
+              loading={loading}
+            />
+          ))
+        ) : (
+          <Heading mt="4" children="Courses Not Found" />
+        )}
       </Stack>
     </Container>
   );
