@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { profileReducer, userReducer } from './reducers/UserReducer';
+import { profileReducer, subscriptionReducer, userReducer } from './reducers/UserReducer';
 import { courseReducer } from './reducers/courseReducer';
 
 export const server = 'https://courseasy-ragasxx.vercel.app/api/v1';
@@ -9,7 +9,8 @@ const store = configureStore({
   reducer: {
     user: userReducer,
     profile:profileReducer,
-    courses:courseReducer
+    courses:courseReducer,
+    subscription:subscriptionReducer
   },
 });
 

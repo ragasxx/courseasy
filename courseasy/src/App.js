@@ -75,7 +75,7 @@ function App() {
         <Route path="/request" element={<Request />} />
         <Route path="/about" element={<About />} />
 
-        <Route path="/subscribe" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Subscribe /></ProtectedRoute>} />
+        <Route path="/subscribe" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Subscribe user={user} /></ProtectedRoute>} />
       
         <Route path="/paymentsuccess" element={<PaymentSuccess />} />
         <Route path="/paymentfail" element={<PaymentFail />} />

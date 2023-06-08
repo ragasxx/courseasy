@@ -233,7 +233,7 @@ export const removeFromPlaylist = catchAsyncError(async (req, res, next) => {
   const course = await Course.findById(req.query.id);
   if (!course) return next(new ErrorHandler("Invalid Course Id", 404));
 
-  const newPlaylist = user.playlist.filter((item) => {
+  const newPlaylist = user.playlist.filter((item) =>{ 
     if (item.course.toString() !== course._id.toString()) return item;
   });
 

@@ -33,7 +33,7 @@ export const paymentVerification = catchAsyncError(async (req, res, next) => {
 
   const user = await User.findById(req.user._id);
 
-  const subscriptiob_id = user.subscription.id;
+  const subscription_id = user.subscription.id;
 
   const generated_signature = crypto
     .createHmac("sha256", process.env.RAZORPAY_API_SECRET)

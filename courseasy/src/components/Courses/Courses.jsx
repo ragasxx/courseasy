@@ -14,6 +14,8 @@ import { Link } from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import { getAllCourses } from '../../redux/actions/course';
 import {toast} from "react-hot-toast";
+import { addToPlaylist } from '../../redux/actions/profile';
+import {loadUser} from '../../redux/actions/user'
 
 const Course = ({
   views,
@@ -24,6 +26,7 @@ const Course = ({
   creator,
   description,
   lectureCount,
+  loading
 }) => {
   return (
     <VStack className="course" alignItems={['center', 'flex-start']}>
@@ -68,6 +71,7 @@ const Course = ({
           <Button colorScheme={'yellow'}>Watch Now</Button>
         </Link>
         <Button
+        isLoading={loading}
           variant={'ghost'}
           colorScheme={'yellow'}
           onClick={() => addToPlaylistHandler(id)}
@@ -83,7 +87,7 @@ const Courses = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
 
-  const {courses,loading,error} = useSelector(state=>state.courses);
+  const {courses,loading,error,message} = useSelector(state=>state.courses);
 
   const dispatch = useDispatch();
 
@@ -93,14 +97,20 @@ const Courses = () => {
       toast.error(error);
       dispatch({type:"clearError"});
     }
+    if(message){
+      toast.success(message);
+      dispatch({type:"clearMessage"});
+    }
      
   dispatch(getAllCourses(keyword,category)); 
 
-  }, [dispatch,keyword,category,error]);
+  }, [dispatch,keyword,category,error,message]);
   
 
-  const addToPlaylistHandler = (courseId) => {
+  const addToPlaylistHandler = async(courseId) => {
     console.log('added to playlist',courseId);
+    await dispatch(addToPlaylist(courseId))
+    dispatch(loadUser());
   };
 
   const categories = [

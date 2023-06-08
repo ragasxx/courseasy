@@ -76,3 +76,45 @@ export const updateProfilePicture = (formdata)=>async(dispatch)=>{
         dispatch({type:"updateProfilePictureFail",payload:error.response.data.message})
     }
 }
+
+export const addToPlaylist = (id)=> async dispatch=>{
+    try {
+        dispatch({type:"addToPlaylistRequest"});
+        
+        const {data} = await axios.post(`${server}/addtoplaylist`,{id},{
+            headers:{
+                "Content-Type":"application/json"
+            },withCredentials:true, 
+        });
+    
+        dispatch({type:"addToPlaylistSuccess",payload:data.message})
+    
+    } catch (error) {
+        dispatch({
+            type:"addToPlaylistFail",
+            payoad:error.response.data.message,
+        })
+    }
+
+    }
+
+    export const removeFromPlaylist = (id)=> async dispatch=>{
+        try {
+            dispatch({type:"removeFromPlaylistRequest"});
+            
+            const {data} = await axios.delete(`${server}/removefromplaylist?id=${id}`,{
+                headers:{
+                    "Content-Type":"application/json"
+                },withCredentials:true, 
+            });
+        
+            dispatch({type:"removeFromPlaylistSuccess",payload:data.message})
+        
+        } catch (error) {
+            dispatch({
+                type:"removeFromPlaylistFail",
+                payoad:error.response.data.message,
+            })
+        }
+    
+        }
