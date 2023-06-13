@@ -24,7 +24,7 @@ import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { useState } from 'react';
 import { removeFromPlaylist, updateProfilePicture } from '../../redux/actions/profile';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUser } from '../../redux/actions/user';
+import { cancelSubscription, loadUser } from '../../redux/actions/user';
 import toast from "react-hot-toast";
 
 const Profile = ({user}) => {
@@ -32,6 +32,7 @@ const Profile = ({user}) => {
    const dispatch = useDispatch();
 
    const {loading,error,message} = useSelector(state=>state.profile);
+   const {loading:cancelSubscriptionLoading,error:cancelSubscriptionError,message:cancelSubscriptionMessage} = useSelector(state=>state.subscription);
 
    useEffect(() => {
     if(error){
@@ -42,12 +43,29 @@ const Profile = ({user}) => {
       toast.success(message);
       dispatch({type:"clearMessage"})
     }
-   }, [dispatch,error,message])
+    if(cancelSubscriptionError){
+      toast.error(cancelSubscriptionError);
+      dispatch({type:"clearError"})
+    }
+     
+    if(cancelSubscriptionMessage){
+      toast.error(cancelSubscriptionMessage);
+      dispatch({type:"clearMessage"})
+      dispatch(loadUser())
+    }
+
+   }, [dispatch,error,message,cancelSubscriptionError,cancelSubscriptionMessage])
 
   const removeFromPlaylistHandler = async(id) => {
    await dispatch(removeFromPlaylist(id));
     dispatch(loadUser());
   };
+
+  const cancelSubscriptionHandler = async()=>{
+     await dispatch(cancelSubscription());
+     
+  }
+
 
   const changeImageSubmitHandler = async (e, image) => {
     e.preventDefault();
@@ -93,7 +111,7 @@ const Profile = ({user}) => {
             <HStack>
               <Text children="Subscription" fontWeight={'bold'}></Text>
               {user.subscription&&user.subscription.status === 'active' ? (
-                <Button color={'yellow.500'}>Cancel Subscription</Button>
+                <Button isLoading={cancelSubscriptionLoading} onClick={cancelSubscriptionHandler} color={'yellow.500'}>Cancel Subscription</Button>
               ) : (
                 <Link to="/subscribe">
                   <Button colorScheme={'yellow'}> Subscribe</Button>
