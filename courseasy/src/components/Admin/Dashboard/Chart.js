@@ -24,7 +24,7 @@ ChartJS.register(
   Legend
 );
 
-export const LineChart = () => {
+export const LineChart = ({viewsArray=[]}) => {
   const labels = getLastYearMonths();
 
   const options = {
@@ -45,7 +45,7 @@ export const LineChart = () => {
     datasets: [
       {
         label: 'Views',
-        data: [1, 2, 3, 4],
+        data: viewsArray,
         borderColor: 'rgba(107,70,193,0.5)',
       },
     ],
@@ -54,16 +54,16 @@ export const LineChart = () => {
   return <Line options={options} data={data}></Line>;
 };
 
-export const DoughnutChart = () => {
+export const DoughnutChart = ({users=[]}) => {
   const data = {
     labels: ['Sucbscribed', 'Not Subscribed'],
     datasets: [
       {
         label: 'Views',
-        data: [3, 20],
+        data:users,
         borderColor: ['rgb(62,12,171)', 'rgb(214,43,129)'],
         backgroundColor: ['rgba(62,12,171,0.3)', 'rgba(214,43,129,0.3)'],
-        borderWidth: 1,
+        borderWidth: 1, 
       },
     ],
   };
@@ -89,8 +89,7 @@ function getLastYearMonths() {
     'december',
   ];
   const currentMonth = new Date().getMonth();
-  const remain = 11 - currentMonth;
-
+  
   for (let i = currentMonth; i < months.length; i--) {
     const element = months[i];
     labels.unshift(element);
@@ -98,15 +97,11 @@ function getLastYearMonths() {
       break;
     }
   }
-  console.log(labels);
-
   for (let i = 11; i > currentMonth; i--) {
     if (i === currentMonth) break;
     const element = months[i];
     labels.unshift(element);
   }
-
-  console.log(labels);
   return labels;
 }
 
