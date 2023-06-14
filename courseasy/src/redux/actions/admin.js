@@ -64,3 +64,49 @@ export const deleteLecture = (courseId,lectureId)=> async(dispatch)=>{
         dispatch({type:"deleteLectureFail",payload:error.response.data.message})
     }
 }
+
+export const getAllUsers = ()=> async(dispatch)=>{
+    
+    try {
+        dispatch({type:"getAllUsersRequest"})
+        const{data} = await axios.get(`${server}/admin/users`,{
+            headers:{
+                "Content-Type":"application/json"
+            },
+            withCredentials:true, 
+        });
+        dispatch({type:"getAllUsersSuccess",payload:data.users})
+
+    } catch (error) { 
+        dispatch({type:"getAllUsersFail",payload:error.response.data.message})
+    }
+}
+
+export const deleteUser = (id)=> async(dispatch)=>{
+    try {
+        dispatch({type:"deleteUserRequest"})
+        const{data} = await axios.delete(`${server}/admin/user/${id}`,{
+            withCredentials:true, 
+        });
+        dispatch({type:"deleteUserSuccess",payload:data.message})
+
+    } catch (error) { 
+        dispatch({type:"deleteUserFail",payload:error.response.data.message})
+    }
+}
+
+export const  updateUser = (id)=> async(dispatch)=>{
+    try {
+        dispatch({type:"updateUserRoleRequest"})
+        const{data} = await axios.put(`${server}/admin/user/${id}`,{},{
+            headers:{
+                "Content-Type":"application/json"
+            },
+            withCredentials:true, 
+        });
+        dispatch({type:"updateUserRoleSuccess",payload:data.message})
+
+    } catch (error) { 
+        dispatch({type:"updateUserRoleFail",payload:error.response.data.message})
+    }
+}
