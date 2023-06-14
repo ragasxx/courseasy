@@ -78,6 +78,7 @@ const Register = () => {
               placeholder="abc"
               type={'text'}
               focusBorderColor="yellow.500"
+              autoComplete='off'
             />
           </Box>
           <Box marginY={'4'}>
@@ -90,7 +91,7 @@ const Register = () => {
               placeholder="abc@gmail.com"
               type={'email'}
               focusBorderColor="yellow.500"
-              autoComplete="false"
+              autoComplete='off'
             />
           </Box>
           <Box marginY={'4'}>

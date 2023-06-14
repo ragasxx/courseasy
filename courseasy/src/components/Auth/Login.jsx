@@ -36,7 +36,7 @@ const dispatch = useDispatch();
               placeholder="abc@gmail.com"
               type={'email'}
               focusBorderColor="yellow.500"
-              autoComplete="false"
+              autoComplete='off'
             />
           </Box>
           <Box marginY={'4'}>

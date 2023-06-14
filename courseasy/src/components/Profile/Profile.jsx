@@ -63,6 +63,7 @@ const Profile = ({user}) => {
 
   const cancelSubscriptionHandler = async()=>{
      await dispatch(cancelSubscription());
+     dispatch(loadUser());
      
   }
 

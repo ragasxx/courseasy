@@ -20,7 +20,7 @@ const CoursePage = ({user}) => {
 
  }, [dispatch,params.id])
 
- if(user.role!=="admin" && (user.subscription==='undefined' || user.subscription.status!=="active")){
+ if(user.role!=="admin" && (user.subscription === undefined || user.subscription.status!=="active")){
   return <Navigate to= {"/subscribe"} />
  }
   return (

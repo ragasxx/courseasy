@@ -71,8 +71,8 @@ function App() {
         <Route path="/updateprofile" element={<ProtectedRoute isAuthenticated={isAuthenticated}><UpdateProfile user={user} /></ProtectedRoute>} />
 
 
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/request" element={<Request />} />
+        <Route path="/contact" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Contact /></ProtectedRoute>} />
+        <Route path="/request" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Request /></ProtectedRoute>} />
         <Route path="/about" element={<About />} />
 
         <Route path="/subscribe" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Subscribe user={user} /></ProtectedRoute>} />
