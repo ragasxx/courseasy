@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Center, Grid, Heading, Text, VStack } from '@chakra-ui/react';
+import { Box,  Grid, Heading, Text, VStack } from '@chakra-ui/react';
 import { useState,useEffect } from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Navigate, useParams} from "react-router-dom";

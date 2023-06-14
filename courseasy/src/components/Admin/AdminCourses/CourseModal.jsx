@@ -6,7 +6,6 @@ import {
   Input,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -22,10 +21,11 @@ const CourseModal = ({
   isOpen,
   onClose,
   id,
-  deleteButtonHandler,
+  deleteLectureButtonHandler,
   courseTitle,
   lectures = [],
   addLectureHandler,
+  loading
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -80,14 +80,18 @@ const CourseModal = ({
                 <Heading children={`#${id}`} size={'sm'} opacity={0.4} />
               </Box>
               <Heading children="Lectures" size={'lg'} />
-              <VideoCard
-                title="React intro"
-                description="this is a intro lecture"
-                num={1}
-                lectureId="aAaAaAsasasa"
+              {lectures.map((item,i)=>(
+                <VideoCard
+                key={i}
+                title= {item.title}
+                description={item.description}
+                num={i+1}
+                lectureId= {item._id}
                 courseId={id}
-                deleteButtonHandler={deleteButtonHandler}
+                deleteLectureButtonHandler={deleteLectureButtonHandler}
               />
+              ))}
+              
             </Box>
             <Box>
               <form
@@ -133,6 +137,7 @@ const CourseModal = ({
                   )}
 
                   <Button
+                    isLoading={loading}
                     type="submit"
                     colorScheme="purple"
                     children="Upload"
@@ -159,7 +164,7 @@ function VideoCard({
   description,
   lectureId,
   courseId,
-  deleteButtonHandler,
+  deleteLectureButtonHandler,
 }) {
   return (
     <Stack
@@ -176,7 +181,7 @@ function VideoCard({
       </Box>
       <Button
         color={'purple.600'}
-        onClick={() => deleteButtonHandler(courseId, lectureId)}
+        onClick={() => deleteLectureButtonHandler(courseId, lectureId)}
       >
         <RiDeleteBin7Fill />
       </Button>

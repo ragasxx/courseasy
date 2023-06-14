@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
-  Box,
   Button,
   Container,
   Grid,
@@ -11,6 +10,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import Sidebar from '../Sidebar';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCourse } from '../../../redux/actions/admin';
+import {toast} from "react-hot-toast";
 
 const fileUploadCss = {
   cursor: 'pointer',
@@ -33,6 +35,7 @@ const CreateCourse = () => {
   const [category, setCategory] = useState('');
   const [image, setImage] = useState('');
   const [imagePrev, setImagePrev] = useState('');
+  
 
   const categories = [
     'Web Development',
@@ -53,10 +56,37 @@ const CreateCourse = () => {
     };
   };
 
+  const dispatch = useDispatch();
+  const {loading,message,error} = useSelector(state=>state.admin);
+  
+  useEffect(() => {
+
+    if(error){
+      toast.error(error);
+      dispatch({type:"clearError"});
+    }
+    if(message){
+      toast.success(message);
+      dispatch({type:"clearMessage"});
+    }
+  }, [dispatch,error,message]);
+  
+
+  const submitHandler = (e)=>{
+     e.preventDefault();
+     const formdata = new FormData();
+     formdata.append("title",title);
+     formdata.append("description",description);
+     formdata.append("createdBy",createdBy);
+     formdata.append("category",category);
+     formdata.append("file",image);
+     dispatch(createCourse(formdata));
+  }
+
   return (
     <Grid minH={'100vh'} templateColumns={['1fr', '5fr 1fr']}>
       <Container py={'16'}>
-        <form>
+        <form onSubmit={submitHandler}>
           <Heading
             children="Create Course"
             textAlign={['center', 'left']}
@@ -110,7 +140,7 @@ const CreateCourse = () => {
               <Image src={imagePrev} objectFit="contain" boxSize={'60'} />
             )}
 
-            <Button w={'full'} colorScheme="purple" type="submit">
+            <Button isLoading={loading} w={'full'} colorScheme="purple" type="submit">
               Create
             </Button>
           </VStack>
